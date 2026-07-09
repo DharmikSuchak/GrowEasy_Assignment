@@ -9,7 +9,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
-  timeout: 120000, // 2 minutes — AI processing can take a while
+  timeout: 600000, // 10 minutes — AI processing can take a while for large files
   headers: {
     Accept: "application/json",
   },

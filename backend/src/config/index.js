@@ -7,7 +7,7 @@ const config = {
 
   // Gemini AI configuration
   geminiApiKey: process.env.GEMINI_API_KEY,
-  geminiModel: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+  geminiModel: process.env.GEMINI_MODEL || "gemini-flash-lite-latest",
 
   // Upload constraints
   maxFileSize: 10 * 1024 * 1024, // 10 MB

@@ -12,7 +12,7 @@ Upload CSVs from Facebook Ads, Google Ads, real estate CRMs, marketing agencies,
 |----------|-----------------------------------|
 | Frontend | Next.js (App Router)              |
 | Backend  | Node.js + Express                 |
-| AI       | Google Gemini (gemini-2.5-flash)  |
+| AI       | Google Gemini (gemini-flash-lite-latest)  |
 | Styling  | Tailwind CSS v4                   |
 
 ---
@@ -41,8 +41,8 @@ Upload CSVs from Facebook Ads, Google Ads, real estate CRMs, marketing agencies,
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/groweasy-csv-importer.git
-cd groweasy-csv-importer
+git clone https://github.com/DharmikSuchak/GrowEasy_Assignment.git
+cd GrowEasy_Assignment
 ```
 
 ### 2. Set up the Backend
@@ -86,11 +86,12 @@ The app will be available at `http://localhost:3000`.
 ## Docker Setup
 
 ```bash
-# Set your API key
-export GEMINI_API_KEY=your_actual_api_key_here
+# Add your API key to backend/.env
+cp backend/.env.example backend/.env
+# Edit backend/.env and set GEMINI_API_KEY=your_key
 
 # Build and run
-docker-compose up --build
+docker compose up --build
 ```
 
 - Frontend: http://localhost:3000
@@ -208,4 +209,4 @@ Health check endpoint.
 
 ## Author
 
-Dharmik Suchak — [varun@groweasy.ai](mailto:varun@groweasy.ai)
+Dharmik Suchak

@@ -39,11 +39,10 @@ export function useCSVImport() {
 
     setFile(selectedFile);
 
-    // Parse client-side for preview only
+    // Parse entire file client-side to get true length, but only render 100
     Papa.parse(selectedFile, {
       header: true,
       skipEmptyLines: "greedy",
-      preview: 100, // only parse first 100 rows for preview
       complete: (result) => {
         if (result.data.length === 0) {
           setError("The CSV file appears to be empty.");
@@ -53,7 +52,7 @@ export function useCSVImport() {
 
         setPreviewData({
           headers: result.meta.fields || [],
-          rows: result.data,
+          rows: result.data.slice(0, 100), // Only put first 100 rows in DOM to avoid freezing
           totalRows: result.data.length,
         });
         setStep(2);

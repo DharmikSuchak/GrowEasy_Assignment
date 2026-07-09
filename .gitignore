@@ -34,3 +34,7 @@ test_*.txt
 *.pdf
 real_estate_crm_export.csv
 1_facebook_lead_export.csv
+
+# AI tool scaffolding (not part of the project)
+AGENTS.md
+CLAUDE.md
