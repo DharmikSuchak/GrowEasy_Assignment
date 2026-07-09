@@ -1,5 +1,6 @@
 # AI-Powered CSV Importer — GrowEasy CRM
 
+
 An intelligent CSV-to-CRM importer that uses AI (Google Gemini) to map any CSV format into structured GrowEasy CRM lead records.
 
 Upload CSVs from Facebook Ads, Google Ads, real estate CRMs, marketing agencies, or any custom format — the AI handles column mapping automatically.
@@ -14,6 +15,14 @@ Upload CSVs from Facebook Ads, Google Ads, real estate CRMs, marketing agencies,
 | Backend  | Node.js + Express                 |
 | AI       | Google Gemini (gemini-flash-lite-latest)  |
 | Styling  | Tailwind CSS v4                   |
+
+---
+
+## Engineering Decisions
+
+- **AI Model Selection**: I explicitly configured the backend to use `gemini-flash-lite-latest` rather than the deprecated `gemini-2.5-flash`. This ensures the application remains highly performant and cost-effective while avoiding the 404/403 deprecation errors that occur with older model aliases.
+- **Robust Processing**: For large files, the frontend intelligently previews the first 100 rows to keep the DOM fast, while the backend processes the entire file sequentially in batches of 25 with exponential backoff (1s, 2s, 4s) to gracefully handle rate limits.
+- **Docker Configuration**: Environment variables are managed securely. The `docker-compose.yml` uses an `env_file` directive rather than passing raw strings, ensuring the `GEMINI_API_KEY` stays completely out of version control and shell histories.
 
 ---
 
