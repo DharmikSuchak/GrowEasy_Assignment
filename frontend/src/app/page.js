@@ -168,7 +168,7 @@ export default function Home() {
           className="mt-8 text-xs"
           style={{ color: "var(--text-tertiary)" }}
         >
-          Powered by AI · Built for GrowEasy CRM
+          Built by Dharmik · For GrowEasy CRM
         </p>
       </div>
     </main>
