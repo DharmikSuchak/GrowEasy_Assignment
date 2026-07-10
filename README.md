@@ -18,10 +18,18 @@ Upload CSVs from Facebook Ads, Google Ads, real estate CRMs, marketing agencies,
 
 ---
 
-## Engineering Decisions
+## Trade-offs & Future Improvements
 
-- **AI Model Selection**: I explicitly configured the backend to use `gemini-flash-lite-latest` rather than the deprecated `gemini-2.5-flash`. This ensures the application remains highly performant and cost-effective while avoiding the 404/403 deprecation errors that occur with older model aliases.
-- **Robust Processing**: For large files, the frontend intelligently previews the first 100 rows to keep the DOM fast, while the backend processes the entire file sequentially in batches of 25 with exponential backoff (1s, 2s, 4s) to gracefully handle rate limits.
+- **Rate limiting**: Implemented with in-memory `express-rate-limit` (20 requests/15min per IP) via `backend/src/middleware/rateLimiter.js`. This is sufficient for the assignment's scope and a single-instance deployment. In a horizontally-scaled production environment, this would need to move to a shared store (e.g. a Redis-backed token bucket) since in-memory limits don't sync across multiple server instances.
+
+- **AI model selection**: Configurable via the `GEMINI_MODEL` env var, currently set to `gemini-flash-lite-latest`. During development, Google deprecated both `gemini-2.0-flash` and `gemini-2.5-flash` within roughly a 24-hour window. I switched to Google's rolling model alias instead of a pinned model version specifically to avoid this becoming a recurring point of failure — the alias is repointed by Google as models rotate, so the app keeps working without requiring a code change every time a model is sunset.
+
+- **Batch processing**: CSV records are processed in sequential batches of 25 with retry and exponential backoff per batch, rather than parallel requests, to stay within Gemini free-tier rate limits and avoid cascading failures on large files.
+
+- **Large file handling**: The frontend's import request timeout was increased to accommodate large files (tested up to 800 rows, ~5-6 minutes end-to-end). Additionally, the CSV preview table intentionally renders only the first 100 rows regardless of total file size, to keep the DOM fast and the UI responsive — this is a deliberate performance choice, not a bug or a limit on how many rows can actually be imported. The full file (e.g. all 800 rows) is still sent to the backend and processed in its entirety; only the preview rendering is capped. A more scalable long-term approach would be to move to async job processing with a polling or WebSocket-based status endpoint, rather than one long synchronous HTTP request, but that was out of scope given the assignment timeline.
+
+- **Stateless design**: The application does not use a database, per the assignment's optional database note — CSV data is processed in-memory per request and returned directly to the client, keeping the deployment simple and avoiding unnecessary infrastructure for this use case.
+
 - **Docker Configuration**: Environment variables are managed securely. The `docker-compose.yml` uses an `env_file` directive rather than passing raw strings, ensuring the `GEMINI_API_KEY` stays completely out of version control and shell histories.
 
 ---
