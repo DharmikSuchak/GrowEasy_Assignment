@@ -1,5 +1,6 @@
 # AI-Powered CSV Importer — GrowEasy CRM
 
+**Live Demo**: https://grow-easy-assignment-khaki.vercel.app/
 
 An intelligent CSV-to-CRM importer that uses AI (Google Gemini) to map any CSV format into structured GrowEasy CRM lead records.
 
@@ -29,6 +30,7 @@ Upload CSVs from Facebook Ads, Google Ads, real estate CRMs, marketing agencies,
 - **Large file handling**: The frontend's import request timeout was increased to accommodate large files (tested up to 800 rows, ~5-6 minutes end-to-end). Additionally, the CSV preview table intentionally renders only the first 100 rows regardless of total file size, to keep the DOM fast and the UI responsive — this is a deliberate performance choice, not a bug or a limit on how many rows can actually be imported. The full file (e.g. all 800 rows) is still sent to the backend and processed in its entirety; only the preview rendering is capped. A more scalable long-term approach would be to move to async job processing with a polling or WebSocket-based status endpoint, rather than one long synchronous HTTP request, but that was out of scope given the assignment timeline.
 
 - **Stateless design**: The application does not use a database, per the assignment's optional database note — CSV data is processed in-memory per request and returned directly to the client, keeping the deployment simple and avoiding unnecessary infrastructure for this use case.
+
 
 - **Docker Configuration**: Environment variables are managed securely. The `docker-compose.yml` uses an `env_file` directive rather than passing raw strings, ensuring the `GEMINI_API_KEY` stays completely out of version control and shell histories.
 
